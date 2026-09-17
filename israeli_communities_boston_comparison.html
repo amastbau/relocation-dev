@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>השוואת עיירות עם קהילה ישראלית - מטרו בוסטון</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.85);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-emerald: #34d399;
+      --accent-amber: #fbbf24;
+      --accent-purple: #c084fc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top right, #1e293b, #0f172a);
+      color: var(--text-main);
+      padding: 40px 24px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1400px;
+      width: 100%;
+    }
+
+    header {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    p.subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 850px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .table-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+      overflow-x: auto;
+      backdrop-filter: blur(12px);
+      margin-bottom: 32px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+      font-size: 0.95rem;
+    }
+
+    thead {
+      background: rgba(15, 23, 42, 0.8);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      padding: 18px 20px;
+      color: var(--accent-blue);
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: background-color 0.2s;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    td {
+      padding: 18px 20px;
+      vertical-align: top;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    .town-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .tag-bubble {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .density-high {
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .density-med {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .density-mod {
+      background: rgba(251, 191, 36, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    .grade-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: rgba(52, 211, 153, 0.12);
+      color: var(--accent-emerald);
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: 1px solid rgba(52, 211, 153, 0.25);
+    }
+
+    .price-text {
+      font-weight: 700;
+      color: #fff;
+      font-size: 1.05rem;
+    }
+
+    .notes {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .summary-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      backdrop-filter: blur(8px);
+    }
+
+    .summary-box h3 {
+      font-size: 1.15rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .summary-box p {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    .wizard {
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .wizard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .wizard label { display: grid; gap: 7px; color: #cbd5e1; font-size: .92rem; }
+    .wizard input, .wizard select { border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; background: #0f172a; color: #fff; font: inherit; }
+    .result-card { border-right: 4px solid var(--accent-blue); margin-top: 14px; }
+    .result-card h3 { color: #fff; margin-bottom: 8px; }
+    .result-card .total { color: var(--accent-emerald); font-weight: 700; }
+    .budget-warning { color: var(--accent-amber); margin-top: 16px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <span class="badge">רילוקיישן מטרו-בוסטון</span>
+      <h1>מרכזי הקהילה הישראלית באזור בוסטון רבתי</h1>
+      <p class="subtitle">השוואת עיירות עם נוכחות ישראלית: איכות חינוך (A/A+), מחירי שכירות (3+ חדרים ומשרד), נגישות תחבורתית ומודל רכבים (1 מול 2).</p>
+    </header>
+
+    <section class="wizard" aria-labelledby="wizard-title">
+      <h2 id="wizard-title">מצאו את העיירה המתאימה לכם</h2>
+      <p class="subtitle">בחרו מה חשוב לכם. ההמלצות משקללות שכירות ממוצעת ועלות רכב חודשית, ומציגות את הפשרות בכל בחירה.</p>
+      <div class="wizard-grid" id="wizard-form">
+        <label>הכנסה נטו חודשית ($)<input id="net-income" type="number" min="0" step="100" value="10200"></label>
+        <label>הכנסה שנתית ברוטו למשק הבית ($)<input id="gross-annual-income" type="number" min="0" step="1000" placeholder="לפי מכתב ההעסקה"></label>
+        <label>תקציב חודשי כולל ($, שכירות + תחבורה)<input id="budget" type="number" min="0" step="100" placeholder="לדוגמה: 4500"></label>
+        <label>עלות חודשית לרכב ($)<input id="car-cost" type="number" min="0" step="50" value="700"></label>
+        <label>קהילה ישראלית / דוברת עברית<select data-preference="community"><option value="0">לא חשוב</option><option value="1">חשוב במידה מסוימת</option><option value="2">חשוב מאוד</option></select></label>
+        <label>בית מרווח וחצר<select data-preference="space"><option value="0">לא חשוב</option><option value="1">חשוב במידה מסוימת</option><option value="2">חשוב מאוד</option></select></label>
+        <label>בתי ספר מצוינים<select data-preference="schools"><option value="0">לא חשוב</option><option value="1">חשוב במידה מסוימת</option><option value="2">חשוב מאוד</option></select></label>
+        <label>תחבורה ציבורית<select data-preference="transit"><option value="0">לא חשוב</option><option value="1">חשוב במידה מסוימת</option><option value="2">חשוב מאוד</option></select></label>
+        <label>נסיעה קצרה לבוסטון<select data-preference="commute"><option value="0">לא חשוב</option><option value="1">חשוב במידה מסוימת</option><option value="2">חשוב מאוד</option></select></label>
+      </div>
+      <p class="notes">כלל 40× הוא כלל סינון נפוץ אצל בעלי דירות, לא התחייבות לאישור. הזינו את הברוטו ממכתב ההעסקה.</p>
+      <div id="budget-warning" class="budget-warning" hidden></div>
+      <div id="top-results" class="card-grid" aria-live="polite"></div>
+    </section>
+
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>עיר / עיירה</th>
+            <th>קהילה ומוסדות ישראליים</th>
+            <th>דירוג חינוך</th>
+            <th>אופי המגורים</th>
+            <th>טווח שכירות (3+ חד' + משרד)</th>
+            <th>תחבורה לבוסטון</th>
+            <th>תלות ברכב</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-town="brookline">
+            <td>
+              <span class="town-name">ברוקליין (Brookline)</span>
+              <span class="tag-bubble density-high">ריכוז עליון</span>
+            </td>
+            <td>
+              <strong>המרכז הבלתי מעורער:</strong> סניף צופים ("שבט אופק"), עברית בכל גינה ופארק, מעדניות ומרכולים ישראליים, רשת קשרים ענפה.
+            </td>
+            <td><span class="grade-badge">A+</span><div class="notes">מערכת מובילה ועצמאית</div></td>
+            <td>אורבני-פרברי צפוף, דירות וקונדו (Brownstones). חצרות קטנות/משותפות.</td>
+            <td>
+              <span class="price-text">$4,000 – $4,800+</span>
+              <div class="notes">חורג בדרך כלל מהתקציב לנכס מרווח</div>
+            </td>
+            <td>
+              <strong>Green Line (T):</strong><br>רכבת קלה ישירה למרכז (20–30 דק').
+            </td>
+            <td>
+              <strong style="color: var(--accent-emerald);">רכב 1 (או 0)</strong><br>
+              הליכתית לחלוטין. חניה מאתגרת ברחוב.
+            </td>
+          </tr>
+
+          <tr data-town="newton" style="background: rgba(56, 189, 248, 0.04);">
+            <td>
+              <span class="town-name">ניוטון (Newton)</span>
+              <span class="tag-bubble density-high">ריכוז גבוה מאוד</span>
+            </td>
+            <td>
+              <strong>מעוז המשפחות:</strong> מרכז JCC Greater Boston ענק, קהילה ישראלית רחבה, ילדים דוברי עברית בכל שכבת גיל ובית ספר.
+            </td>
+            <td><span class="grade-badge">A+</span><div class="notes">בצמרת המדינה</div></td>
+            <td>פרבר ירוק ואמיד, בתים רב-משפחתיים ופרטיים, רחובות רחבים ושקטים.</td>
+            <td>
+              <span class="price-text">$3,300 – $4,000</span>
+              <div class="notes" style="color: var(--accent-emerald);">הזדמנויות כמו 77 Hartford ($3,350)</div>
+            </td>
+            <td>
+              <strong>Green Line (T) / CR:</strong><br>תחנות T מרובות ונוחות לבוסטון (25–35 דק').
+            </td>
+            <td>
+              <strong style="color: var(--accent-emerald);">רכב 1 בהחלט מספיק</strong><br>
+              במיוחד בסמוך לתחנות ה-T.
+            </td>
+          </tr>
+
+          <tr data-town="needham">
+            <td>
+              <span class="town-name">נידהם (Needham)</span>
+              <span class="tag-bubble density-med">בינונית-גבוהה</span>
+            </td>
+            <td>משפחות ישראליות מבוססות רבות, קרובה פיזית ל-JCC של ניוטון, אירועים ופעילויות קהילתיות משותפות.</td>
+            <td><span class="grade-badge">A+</span><div class="notes">מערכת מעולה</div></td>
+            <td>פרבר אמריקאי קלאסי, בתים פרטיים עם חצרות יפות, רחובות שקטים מאוד.</td>
+            <td>
+              <span class="price-text">$3,600 – $4,200</span>
+            </td>
+            <td>
+              <strong>Needham Commuter Rail:</strong><br>ישירות ל-South Station (35–40 דק').
+            </td>
+            <td>
+              <strong>עדיפות ל-2 רכבים</strong><br>
+              (אפשרי 1 בסמיכות לתחנה).
+            </td>
+          </tr>
+
+          <tr data-town="natick" style="background: rgba(52, 211, 153, 0.04);">
+            <td>
+              <span class="town-name">נאטיק (Natick)</span>
+              <span class="tag-bubble density-high">ריכוז גבוה ב-Metrowest</span>
+            </td>
+            <td>
+              <strong>מרכז ישראלי חם:</strong> קהילה גדולה ומגובשת, קבוצות וואטסאפ פעילות, מפגשי שישי וחגים, וילדים דוברי עברית בבתי הספר.
+            </td>
+            <td><span class="grade-badge">A / A+</span><div class="notes">מעטפת ELE חזקה</div></td>
+            <td>פרבר חי ומאוזן, מרכז עיירה קהילתי, קניון ומוקדי מסחר נגישים, חצרות בגודל נוח.</td>
+            <td>
+              <span class="price-text">$3,400 – $3,850</span>
+              <div class="notes" style="color: var(--accent-emerald);">איזון מעולה של בית פרטי בתקציב</div>
+            </td>
+            <td>
+              <strong>Framingham/Worcester CR:</strong><br>ישירות ל-South Station (40–45 דק').
+            </td>
+            <td>
+              <strong style="color: var(--accent-emerald);">רכב 1 מספיק לחלוטין</strong><br>
+              מודל הקפצה לתחנה ונסיעות מקומיות.
+            </td>
+          </tr>
+
+          <tr data-town="lexington">
+            <td>
+              <span class="town-name">לקסינגטון (Lexington)</span>
+              <span class="tag-bubble density-med">בינונית (הייטק/מחקר)</span>
+            </td>
+            <td>משפחות ישראליות רבות בתחומי הטכנולוגיה, הביוטק והאקדמיה. קהילה אמידה ומוכוונת חינוך.</td>
+            <td><span class="grade-badge">A+ עליון</span><div class="notes">טופ 3 במדינה</div></td>
+            <td>פרבר יוקרתי, היסטורי, ירוק מאוד, בתים על מגרשים גדולים עם שקט כפרי.</td>
+            <td>
+              <span class="price-text">$3,500 – $4,200</span>
+              <div class="notes">מציאות כגון 35 Spring St ($3,630)</div>
+            </td>
+            <td>
+              <strong>אוטובוס מהיר ל-Alewife (Red Line)</strong> או רכב דרך Rt-2 (כ-35–45 דק').
+            </td>
+            <td>
+              <strong style="color: var(--accent-amber);">1.5 – 2 רכבים</strong><br>
+              אין רכבת כבדה ישירה בעיירה.
+            </td>
+          </tr>
+
+          <tr data-town="sudbury-wayland">
+            <td>
+              <span class="town-name">סדברי / ויילנד (Sudbury / Wayland)</span>
+              <span class="tag-bubble density-med">בינונית (מבוזרת)</span>
+            </td>
+            <td>קהילה יהודית חזקה מאוד, נוכחות ישראלית יפה (אם כי מבוזרת בשל אופי הבתים), קרובה פיזית לנאטיק.</td>
+            <td><span class="grade-badge">A+</span><div class="notes">חינוך מצטיין</div></td>
+            <td>כפרי-יוקרתי, שקט מוחלט, בתים רחבי ידיים על מגרשים של 1–2 אקר מוקפים יער.</td>
+            <td>
+              <span class="price-text">$3,600 – $4,300</span>
+            </td>
+            <td>
+              <strong>נסיעה לתחנה שכנה:</strong><br>ל-Lincoln או Natick (סה"כ כ-50 דק').
+            </td>
+            <td>
+              <strong style="color: var(--accent-amber);">חובה 2 רכבים</strong><br>
+              מרחקים גדולים בין הבתים למרכזים.
+            </td>
+          </tr>
+
+          <tr data-town="acton">
+            <td>
+              <span class="town-name">אקטון (Acton)</span>
+              <span class="tag-bubble density-mod">בינונית-נמוכה</span>
+            </td>
+            <td>קהילה חמה ומגובשת סביב מרכז בית אלוהים (CBE), מפגשים אזוריים על ציר 495.</td>
+            <td><span class="grade-badge">A+</span><div class="notes">מחוז Acton-Boxborough</div></td>
+            <td>חצי-כפרי, קהילה מוכוונת STEM ואקדמיה, בתים מודרניים וחצרות גדולות.</td>
+            <td>
+              <span class="price-text">$3,200 – $3,700</span>
+            </td>
+            <td>
+              <strong>Fitchburg Commuter Rail:</strong><br>מתחנת South Acton ל-North Station (כ-50 דק').
+            </td>
+            <td>
+              <strong>עדיפות ל-2 רכבים</strong><br>
+              להתנהלות משפחתית נוחה.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-grid">
+      <div class="summary-box" style="border-right: 4px solid var(--accent-emerald);">
+        <h3 style="color: var(--accent-emerald);">🎯 האופציה המושלמת: ניוטון (Newton)</h3>
+        <p>מעוז הקהילה הישראלית עם מוסדות JCC, מרחק הליכה לרכבת ה-T (Green Line), חיסכון בהחזקת רכב שני ומערכת חינוך A+. נכסים כמו 77 Hartford St מציעים משרד מובנה ומרחב מחיה נדיב בתוך מסגרת התקציב.</p>
+      </div>
+
+      <div class="summary-box" style="border-right: 4px solid var(--accent-blue);">
+        <h3 style="color: var(--accent-blue);">🏡 האופציה המאוזנת: נאטיק (Natick)</h3>
+        <p>מאפשרת מגורים בבית פרטי עם חצר, קהילה ישראלית חמה ומחבקת מאוד, רכבת ישירה ל-South Station ויכולת התנהלות מלאה ויעילה עם רכב משפחתי יחיד.</p>
+      </div>
+
+      <div class="summary-box" style="border-right: 4px solid var(--accent-purple);">
+        <h3 style="color: var(--accent-purple);">🌲 מרחב ומצוינות: לקסינגטון (Lexington)</h3>
+        <p>מציעה את רמת החינוך הגבוהה ביותר (טופ 3 במדינה) לצד קהילה ישראלית מבוססת הייטק ומחקר, וקרבה נוחה בהרבה לבוסטון וקיימברידג' בהשוואה לעיירות הצפון-מערב הרחוקות.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="wizard.js"></script>
+</body>
+</html>
