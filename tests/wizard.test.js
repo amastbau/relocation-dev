@@ -19,6 +19,12 @@ test('estimates monthly rent plus required car cost', () => {
   assert.equal(estimateMonthlyTotal(town, 700), 4350);
 });
 
+test('uses a half-car cost for a location that needs zero to one car', () => {
+  const town = { rentMin: 3300, rentMax: 4000, cars: 0.5 };
+
+  assert.equal(estimateMonthlyTotal(town, 700), 4000);
+});
+
 test('ranks a stronger Hebrew-speaking community higher when it matters most', () => {
   const towns = [
     { name: 'Quiet', rentMin: 3000, rentMax: 3000, cars: 1, community: 1, space: 2, schools: 2, transit: 2, commute: 2 },

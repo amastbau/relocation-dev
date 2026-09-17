@@ -65,7 +65,7 @@
   }
 
   const towns = [
-    { id: 'brookline', name: 'ברוקליין', rentMin: 4000, rentMax: 4800, cars: 1, community: 3, space: 1, schools: 3, transit: 3, commute: 3 },
+    { id: 'brookline', name: 'ברוקליין', rentMin: 4000, rentMax: 4800, cars: 0.5, community: 3, space: 1, schools: 3, transit: 3, commute: 3 },
     { id: 'newton', name: 'ניוטון', rentMin: 3300, rentMax: 4000, cars: 1, community: 3, space: 3, schools: 3, transit: 3, commute: 3 },
     { id: 'needham', name: 'נידהם', rentMin: 3600, rentMax: 4200, cars: 2, community: 2, space: 3, schools: 3, transit: 2, commute: 2 },
     { id: 'natick', name: 'נאטיק', rentMin: 3400, rentMax: 3850, cars: 1, community: 3, space: 3, schools: 3, transit: 2, commute: 2 },
@@ -98,7 +98,7 @@
       const summary = buildResultSummary(towns, preferences);
       results.innerHTML = summary.top.map((town) => {
         const positives = town.reasons.length ? town.reasons.join(' · ') : 'התאמה מאוזנת לפי הבחירות שלכם';
-        const tradeoff = town.cars > 1 ? 'הפשרה: לרוב נדרשים שני רכבים.' : 'יתרון: אפשר להסתדר עם רכב אחד.';
+        const tradeoff = town.cars > 1 ? 'הפשרה: לרוב נדרשים שני רכבים.' : town.cars < 1 ? 'יתרון: אפשר להסתדר עם אפס עד רכב אחד.' : 'יתרון: אפשר להסתדר עם רכב אחד.';
         const remaining = calculateRemainingIncome(preferences.netIncome, town.total, 3445);
         const incomeLines = preferences.netIncome ? `<p>נשאר אחרי שכירות ורכב: $${Math.round(remaining.afterLocation).toLocaleString()}</p><p>להוצאות משתנות או לחיסכון: $${Math.round(remaining.afterBaseline).toLocaleString()}</p>` : '';
         const averageRent = (town.rentMin + town.rentMax) / 2;
