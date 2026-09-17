@@ -100,7 +100,7 @@
         const positives = town.reasons.length ? town.reasons.join(' · ') : 'התאמה מאוזנת לפי הבחירות שלכם';
         const tradeoff = town.cars > 1 ? 'הפשרה: לרוב נדרשים שני רכבים.' : 'יתרון: אפשר להסתדר עם רכב אחד.';
         const remaining = calculateRemainingIncome(preferences.netIncome, town.total, 3445);
-        const incomeLines = preferences.netIncome ? `<p>נשאר אחרי שכירות ורכב: $${Math.round(remaining.afterLocation).toLocaleString()}</p><p>חיסכון אפשרי אחרי שירותים והוצאות משפחה: $${Math.round(remaining.afterBaseline).toLocaleString()}</p>` : '';
+        const incomeLines = preferences.netIncome ? `<p>נשאר אחרי שכירות ורכב: $${Math.round(remaining.afterLocation).toLocaleString()}</p><p>להוצאות משתנות או לחיסכון: $${Math.round(remaining.afterBaseline).toLocaleString()}</p>` : '';
         const averageRent = (town.rentMin + town.rentMax) / 2;
         const requiredGross = averageRent * 40;
         const fortyTimes = preferences.grossAnnualIncome
